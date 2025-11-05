@@ -338,13 +338,15 @@ namespace Epam.ItMarathon.ApiService.Domain.Aggregate.Room
         public async Task<Result<Room, ValidationResult>>   DeleteUser(ulong? requestUserId, string requestUserCode, CancellationToken cancellationToken)
         {
             var roomCanBeModifiedResult = CheckRoomCanBeModified();
+            var userToDelete = Users.FirstOrDefault(user => user.Id == requestUserId);
+            var requestingUser = Users.FirstOrDefault(user => user.AuthCode == requestUserCode);
+            
             // Check Room is not closed (HW 2.6)
             if (roomCanBeModifiedResult.IsFailure)
             {
                 return Result.Failure<Room, ValidationResult>(roomCanBeModifiedResult.Error);
             }
             
-            var userToDelete = Users.FirstOrDefault(user => user.Id == requestUserId);
             // Check if User is not found (HW 2.1)
             if (userToDelete is null)
             {
@@ -353,11 +355,10 @@ namespace Epam.ItMarathon.ApiService.Domain.Aggregate.Room
                 ]));
             }
             
-            var requestingUser = Users.FirstOrDefault(user => user.AuthCode == requestUserCode);
             // Check if Requesting User is not found (HW 2.2)
             if (requestingUser is null)
             {
-                return Result.Failure<Room, ValidationResult>(new NotFoundError([
+                return Result.Failure<Room, ValidationResult>(new NotAuthorizedError([
                     new ValidationFailure("user.AuthCode", "User with such UserCode not found")
                 ]));
             }
@@ -373,7 +374,7 @@ namespace Epam.ItMarathon.ApiService.Domain.Aggregate.Room
             // Requesting user and user to delete are from different rooms (HW 2.4)
             if (requestingUser.RoomId != userToDelete.RoomId)
             {
-                return Result.Failure<Room, ValidationResult>(new BadRequestError([
+                return Result.Failure<Room, ValidationResult>(new ForbiddenError([
                     new ValidationFailure("user.RoomId", "Requesting user and user to delete are from different rooms")
                 ]));
             }
