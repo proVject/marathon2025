@@ -34,6 +34,8 @@ services:
        - "8080:8080"
      networks:
        - app
+    # вказуємо платформу для runtime (контейнера)
+     platform: linux/amd64
 
   db:
      image: postgres:16

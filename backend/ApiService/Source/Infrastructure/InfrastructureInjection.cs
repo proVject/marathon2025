@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿ using System.Diagnostics.CodeAnalysis;
 using Epam.ItMarathon.ApiService.Domain.Abstract;
 using Epam.ItMarathon.ApiService.Infrastructure.Database;
 using Epam.ItMarathon.ApiService.Infrastructure.Database.Models.AutoMapper;
