@@ -334,5 +334,61 @@ namespace Epam.ItMarathon.ApiService.Domain.Aggregate.Room
                 options => options.UseCustomSelector(new MemberNameValidatorSelector([propertyName])));
             return validationResult.IsValid ? this : Result.Failure<Room, ValidationResult>(validationResult);
         }
-    }
+
+        public async Task<Result<Room, ValidationResult>>   DeleteUser(ulong? requestUserId, string requestUserCode, CancellationToken cancellationToken)
+        {
+            var roomCanBeModifiedResult = CheckRoomCanBeModified();
+            var userToDelete = Users.FirstOrDefault(user => user.Id == requestUserId);
+            var requestingUser = Users.FirstOrDefault(user => user.AuthCode == requestUserCode);
+            
+            // Check Room is not closed (HW 2.6)
+            if (roomCanBeModifiedResult.IsFailure)
+            {
+                return Result.Failure<Room, ValidationResult>(roomCanBeModifiedResult.Error);
+            }
+            
+            // Check if User is not found (HW 2.1)
+            if (userToDelete is null)
+            {
+                return Result.Failure<Room, ValidationResult>(new NotFoundError([
+                    new ValidationFailure("user.Id", "User with such id not found")
+                ]));
+            }
+            
+            // Check if Requesting User is not found (HW 2.2)
+            if (requestingUser is null)
+            {
+                return Result.Failure<Room, ValidationResult>(new NotAuthorizedError([
+                    new ValidationFailure("user.AuthCode", "User with such UserCode not found")
+                ]));
+            }
+            
+            // Check User is not admin (HTO 2.3)
+            if (!requestingUser.IsAdmin)
+            {
+                return Result.Failure<Room, ValidationResult>(new ForbiddenError([
+                    new ValidationFailure("user.IsAdmin", "User with such UserCode is not admin")
+                ]));
+            }
+            
+            // Requesting user and user to delete are from different rooms (HW 2.4)
+            if (requestingUser.RoomId != userToDelete.RoomId)
+            {
+                return Result.Failure<Room, ValidationResult>(new ForbiddenError([
+                    new ValidationFailure("user.RoomId", "Requesting user and user to delete are from different rooms")
+                ]));
+            }
+            
+            // User to delete and admin is the same user (HW 2.5)
+            if (requestUserId == requestingUser.Id)
+            {
+                return Result.Failure<Room, ValidationResult>(new BadRequestError([
+                    new ValidationFailure("user.Id", "Requesting user cannot delete himself")
+                ]));
+            }
+            
+            Users.Remove(userToDelete);
+            return this;
+        }
+    } 
 }

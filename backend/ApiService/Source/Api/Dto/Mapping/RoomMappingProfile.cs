@@ -12,7 +12,7 @@ namespace Epam.ItMarathon.ApiService.Api.Dto.Mapping
     {
         public RoomMappingProfile()
         {
-            CreateMap<RoomCreationDto, RoomApplication>()
+             CreateMap<RoomCreationDto, RoomApplication>()
                 .ForMember(roomApplication => roomApplication.GiftExchangeDate, opt => opt
                     .MapFrom(roomDto => DateTime.Parse(
                         roomDto.GiftExchangeDate,
