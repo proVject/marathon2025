@@ -19,6 +19,7 @@
 # Ignore environment-specific files
 .envrc
 .env
+**/.idea
 /testautomation/SecretNick.TestAutomation/Tests/obj
 /.vs/VSWorkspaceState.json
 /testautomation/SecretNick.TestAutomation/Tests/Features/Api/RoomManagement.feature.cs
