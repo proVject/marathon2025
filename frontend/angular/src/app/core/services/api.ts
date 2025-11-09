@@ -85,6 +85,13 @@ export class ApiService {
     );
   }
 
+  public deleteUser(userId: number, userCode: string): Observable<HttpResponse<null>> {
+    return this.#http.delete<null>(
+      `${this.#baseUrl}${Endpoint.users}/${userId}?userCode=${userCode}`,
+      { observe: 'response' }
+    );
+  }
+
   public patchRoom(
     userCode: string,
     payload: RoomUpdateRequest

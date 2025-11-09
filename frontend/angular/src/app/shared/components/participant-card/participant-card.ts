@@ -4,13 +4,13 @@ import {
   ElementRef,
   HostBinding,
   inject,
-  input,
+  input, output,
 } from '@angular/core';
 import { tap } from 'rxjs';
 
 import { IconButton } from '../icon-button/icon-button';
 import {
-  AriaLabel,
+  AriaLabel, IconColor,
   IconName,
   MessageType,
   NavigationLinkSegment,
@@ -21,10 +21,12 @@ import { PopupService } from '../../../core/services/popup';
 import { copyToClipboard } from '../../../utils/copy';
 import { UrlService } from '../../../core/services/url';
 import { ParticipantInfoModal } from '../../../room/components/participant-info-modal/participant-info-modal';
+import { ParticipantDeleteModal } from '../../../room/components/participant-delete-modal/participant-delete-modal';
 import { ModalService } from '../../../core/services/modal';
-import { getPersonalInfo } from '../../../utils/get-personal-info';
+import {getPersonalInfo} from '../../../utils/get-personal-info';
 import { UserService } from '../../../room/services/user';
 import type { User } from '../../../app.models';
+import {RoomService} from '../../../room/services/room';
 
 @Component({
   selector: 'li[app-participant-card]',
@@ -45,6 +47,7 @@ export class ParticipantCard {
   readonly #host = inject(ElementRef<HTMLElement>);
   readonly #modalService = inject(ModalService);
   readonly #userService = inject(UserService);
+  readonly #roomService = inject(RoomService);
 
   public readonly isCurrentUser = computed(() => {
     const code = this.userCode();
@@ -53,11 +56,19 @@ export class ParticipantCard {
   public readonly fullName = computed(
     () => `${this.participant().firstName} ${this.participant().lastName}`
   );
+  public readonly isShownDeleteButton = computed(
+    () => this.isCurrentUserAdmin() && !this.isCurrentUser() && !this.#roomService.isRoomDrawn()
+  );
+
+  readonly handleDeleteUser = output<User>();
 
   public readonly iconCopy = IconName.Link;
   public readonly ariaLabelCopy = AriaLabel.ParticipantLink;
   public readonly iconInfo = IconName.Info;
+  public readonly iconDelete = IconName.Delete;
   public readonly ariaLabelInfo = AriaLabel.Info;
+
+  public readonly iconDeleteColor = IconColor.Red;
 
   @HostBinding('tabindex') tab = 0;
   @HostBinding('class.list-row') rowClass = true;
@@ -103,6 +114,13 @@ export class ParticipantCard {
 
     this.#showPopup();
   }
+  public onDeleteClick(): void {
+    if (!this.isCurrentUserAdmin() || this.participant()?.userCode === this.userCode()) {
+      return;
+    }
+
+    this.#openDeleteModal();
+  }
 
   public onCopyHover(target: EventTarget | null): void {
     if (target instanceof HTMLElement) {
@@ -119,6 +137,11 @@ export class ParticipantCard {
     if (target instanceof HTMLElement) {
       this.#popup.hide(target);
     }
+  }
+
+  public deleteUser(): void {
+    this.handleDeleteUser.emit(this.participant());
+    this.#modalService.close()
   }
 
   #openModal(): void {
@@ -166,5 +189,30 @@ export class ParticipantCard {
       },
       true
     );
+  }
+
+  #openDeleteModal(): void {
+    this.#userService
+      .getUsers()
+      .pipe(
+        tap(({ status }) => {
+          if (status === 200) {
+            this.#modalService.openWithResult(
+              ParticipantDeleteModal,
+              {
+                personalInfo: {
+                  firstName: this.participant().firstName,
+                  lastName: this.participant().lastName,
+                }
+              },
+              {
+                buttonAction: () => this.deleteUser(),
+                closeModal: () => this.#modalService.close(),
+              }
+            );
+          }
+        })
+      )
+      .subscribe();
   }
 }

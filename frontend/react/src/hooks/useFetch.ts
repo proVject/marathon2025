@@ -30,12 +30,25 @@ export function useFetch<T = unknown, N = undefined>(
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      const result: T = await response.json();
-      setData(result);
+      // const result: T = await response.json();
+      // setData(result);
+      //
+      // if (onSuccess) {
+      //   onSuccess(result);
+      // }
 
-      if (onSuccess) {
-        onSuccess(result);
+      let result: T | null = null;
+      const hasJson =
+        response.status !== 204 &&
+        response.headers.get("content-length") !== "0" &&
+        response.headers.get("content-type")?.includes("application/json");
+
+      if (hasJson) {
+        result = (await response.json()) as T;
       }
+
+      setData(result);
+      onSuccess?.(result);
     } catch (error) {
       if ((error as Error).name !== "AbortError") {
         setIsError(true);

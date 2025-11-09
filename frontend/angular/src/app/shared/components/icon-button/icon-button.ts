@@ -1,7 +1,7 @@
 import { Component, computed, input } from '@angular/core';
 
 import { ICONS_SPRITE_PATH } from '../../../app.constants';
-import { AriaLabel, IconName } from '../../../app.enum';
+import {AriaLabel, IconColor, IconName} from '../../../app.enum';
 
 @Component({
   selector: 'app-icon-button',
@@ -12,6 +12,8 @@ export class IconButton {
   readonly iconName = input.required<IconName>();
   readonly ariaLabel = input.required<AriaLabel>();
   readonly isButtonDisabled = input<boolean>(false);
+  readonly iconColor = input<IconColor>(IconColor.Green);
 
   readonly iconHref = computed(() => `${ICONS_SPRITE_PATH}#${this.iconName()}`);
+  readonly iconClass = computed(() => `button--${this.iconColor()}`);
 }

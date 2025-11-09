@@ -34,4 +34,12 @@
       (click)="onInfoClick()"
     />
   }
+  @if (isShownDeleteButton()) {
+    <app-icon-button
+      [iconName]="iconDelete"
+      [ariaLabel]="ariaLabelInfo"
+      [iconColor]="iconDeleteColor"
+      (click)="onDeleteClick()"
+    />
+  }
 </span>

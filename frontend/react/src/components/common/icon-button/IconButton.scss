@@ -17,6 +17,7 @@
     }
   }
 
+  /* color green */
   &--green {
     fill: colors.$green-500;
 
@@ -27,6 +28,24 @@
 
     &:active {
       fill: colors.$green-700;
+    }
+
+    &:disabled {
+      fill: colors.$g-600;
+    }
+  }
+
+  /* color red */
+  &--red {
+    fill: colors.$red-500;
+
+    &:hover,
+    &:focus-visible {
+      fill: colors.$red-300;
+    }
+
+    &:active {
+      fill: colors.$red-600;
     }
 
     &:disabled {

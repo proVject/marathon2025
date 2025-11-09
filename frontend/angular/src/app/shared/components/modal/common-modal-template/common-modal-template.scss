@@ -15,14 +15,26 @@
     padding: 36px 36px 0 36px;
     display: flex;
     gap: 12px;
-    align-items: center;
+    align-items: flex-start;
     border-radius: 16px 16px 0px 0px;
     width: 100%;
   }
 
   &__picture {
-    width: 74px;
-    height: 74px;
+    &--large {
+      width: 74px;
+      height: 74px;
+    }
+    &--small {
+      width: 38px;
+      height: 38px;
+    }
+    &--warning {
+      $warning-map: map-get($btn-color-matrix, warning);
+      $warning-default: map-get($warning-map, default);
+      $warning-default-bg: map-get($warning-map, bg);
+      fill: $icon-color-warning;
+    }
   }
 
   &__title {

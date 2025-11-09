@@ -64,6 +64,28 @@
       height: 24px;
     }
   }
+  &--danger {
+    background-color: colors.$red-500;
+    color: colors.$g-100;
+
+    &:hover:not(:disabled),
+    &:focus-visible {
+      background-color: colors.$red-300;
+    }
+
+    &:active:not(:disabled) {
+      background-color: colors.$red-600;
+    }
+
+    &:disabled {
+      background-color: colors.$g-200;
+    }
+
+    &::before {
+      width: 24px;
+      height: 24px;
+    }
+  }
 
   &--secondary {
     color: colors.$green-700;

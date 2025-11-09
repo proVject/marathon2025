@@ -9,6 +9,7 @@ import {
 import { DatePipe } from '@angular/common';
 import { Button } from '../../../shared/components/button/button';
 import { BudgetPipe } from '../../../shared/pipes/budget.pipe';
+import { parseDateString } from '../../../utils/times';
 
 @Component({
   selector: 'app-room-info',
@@ -27,12 +28,14 @@ export class RoomInfo {
   readonly isDrawn = input<boolean>(false);
   readonly userCode = input.required<string>();
 
-  public readonly exchangeDate = computed(
-    () => new Date(this.exchangeDateString())
-  );
+  public readonly exchangeDate = computed(() => {
+    const dateStr = this.exchangeDateString();
+    return parseDateString(dateStr);
+  });
   public readonly noteWithLink = computed(
     () => `${this.invitationNote()}\n\n${this.invitationLink()}`
   );
+
   public readonly variant = RoomDataCardVariant.Light;
   public readonly presentsIcon = PictureName.BigPresents;
   public readonly starIcon = PictureName.Star2;

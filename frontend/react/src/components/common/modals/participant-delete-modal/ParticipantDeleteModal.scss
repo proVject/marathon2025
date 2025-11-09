@@ -1,0 +1,11 @@
+.participant-delete-modal {
+  &__custom-button {
+    margin-left: auto;
+    margin-top: 48px;
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    align-content: center;
+    gap: 16px;
+  }
+}

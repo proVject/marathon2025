@@ -7,13 +7,24 @@ import {
   MAX_PARTICIPANTS_NUMBER,
   generateParticipantLink,
 } from "@utils/general";
-import { type ParticipantsListProps, type PersonalInformation } from "./types";
+import {
+  type ParticipantsListProps,
+  type PersonalInformation,
+  type PersonalToDelete,
+} from "./types";
 import "./ParticipantsList.scss";
+import ParticipantDeleteModal from "@components/common/modals/participant-delete-modal/ParticipantDeleteModal.tsx";
 
-const ParticipantsList = ({ participants }: ParticipantsListProps) => {
+const ParticipantsList = ({
+  participants,
+  roomDetails,
+  onDeleteUser,
+}: ParticipantsListProps) => {
   const { userCode } = useParams();
   const [selectedParticipant, setSelectedParticipant] =
     useState<PersonalInformation | null>(null);
+  const [selectedParticipantToDelete, setSelectedParticipantToDelete] =
+    useState<PersonalToDelete | null>(null);
 
   const admin = participants?.find((participant) => participant?.isAdmin);
   const restParticipants = participants?.filter(
@@ -33,8 +44,25 @@ const ParticipantsList = ({ participants }: ParticipantsListProps) => {
     };
     setSelectedParticipant(personalInfoData);
   };
+  const handleDeleteButtonClick = (participant: Participant) => {
+    if (userCode !== admin?.userCode || userCode === participant?.userCode)
+      return;
+
+    const personalInfoData: PersonalToDelete = {
+      id: participant.id,
+      firstName: participant.firstName,
+      lastName: participant.lastName,
+    };
+    setSelectedParticipantToDelete(personalInfoData);
+  };
+
+  const handleDelete = () => {
+    onDeleteUser(selectedParticipantToDelete?.id);
+    handleDeleteModalClose();
+  };
 
   const handleModalClose = () => setSelectedParticipant(null);
+  const handleDeleteModalClose = () => setSelectedParticipantToDelete(null);
 
   return (
     <div
@@ -61,11 +89,13 @@ const ParticipantsList = ({ participants }: ParticipantsListProps) => {
               key={admin?.id}
               firstName={admin?.firstName}
               lastName={admin?.lastName}
+              roomDetails={roomDetails}
               isCurrentUser={userCode === admin?.userCode}
               isAdmin={admin?.isAdmin}
               isCurrentUserAdmin={userCode === admin?.userCode}
               adminInfo={`${admin?.phone}${admin?.email ? `\n${admin?.email}` : ""}`}
               participantLink={generateParticipantLink(admin?.userCode)}
+              onDeleteButtonClick={() => handleDeleteButtonClick(admin)}
             />
           ) : null}
 
@@ -74,6 +104,7 @@ const ParticipantsList = ({ participants }: ParticipantsListProps) => {
               key={user?.id}
               firstName={user?.firstName}
               lastName={user?.lastName}
+              roomDetails={roomDetails}
               isCurrentUser={userCode === user?.userCode}
               isCurrentUserAdmin={userCode === admin?.userCode}
               participantLink={generateParticipantLink(user?.userCode)}
@@ -82,6 +113,7 @@ const ParticipantsList = ({ participants }: ParticipantsListProps) => {
                   ? () => handleInfoButtonClick(user)
                   : undefined
               }
+              onDeleteButtonClick={() => handleDeleteButtonClick(user)}
             />
           ))}
         </div>
@@ -91,6 +123,14 @@ const ParticipantsList = ({ participants }: ParticipantsListProps) => {
             isOpen={!!selectedParticipant}
             onClose={handleModalClose}
             personalInfoData={selectedParticipant}
+          />
+        ) : null}
+        {selectedParticipantToDelete ? (
+          <ParticipantDeleteModal
+            isOpen={!!selectedParticipantToDelete}
+            onClose={handleDeleteModalClose}
+            onDelete={handleDelete}
+            personalInfoData={selectedParticipantToDelete}
           />
         ) : null}
       </div>

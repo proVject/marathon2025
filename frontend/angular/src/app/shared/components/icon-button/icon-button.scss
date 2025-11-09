@@ -1,4 +1,5 @@
 @use 'colors/color-matrix' as color;
+@use 'colors/color-palette' as *;
 
 :host {
   position: relative;
@@ -54,5 +55,18 @@
   &:disabled {
     fill: color.$icon-button-bg--disabled;
     cursor: not-allowed;
+  }
+
+  &--red {
+    fill: $red-500;
+
+    &:hover,
+    &:focus-visible {
+      fill: $red-300;
+    }
+
+    &:active {
+      fill: $red-600;
+    }
   }
 }

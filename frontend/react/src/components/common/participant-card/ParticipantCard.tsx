@@ -3,6 +3,7 @@ import InfoButton from "../info-button/InfoButton";
 import ItemCard from "../item-card/ItemCard";
 import { type ParticipantCardProps } from "./types";
 import "./ParticipantCard.scss";
+import DeleteButton from "@components/common/delete-button/DeleteButton.tsx";
 
 const ParticipantCard = ({
   firstName,
@@ -13,6 +14,8 @@ const ParticipantCard = ({
   adminInfo = "",
   participantLink = "",
   onInfoButtonClick,
+  onDeleteButtonClick,
+  roomDetails,
 }: ParticipantCardProps) => {
   return (
     <ItemCard title={`${firstName} ${lastName}`} isFocusable>
@@ -38,6 +41,10 @@ const ParticipantCard = ({
 
         {!isCurrentUser && isAdmin ? (
           <InfoButton infoMessage={adminInfo} />
+        ) : null}
+
+        {isCurrentUserAdmin && !isCurrentUser && !roomDetails?.closedOn ? (
+          <DeleteButton onClick={onDeleteButtonClick} />
         ) : null}
       </div>
     </ItemCard>

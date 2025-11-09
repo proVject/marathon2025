@@ -11,10 +11,12 @@ const Modal = ({
   description,
   subdescription,
   iconName,
+  iconSize = "large",
   isOpen = false,
   onClose,
   onConfirm,
   children,
+  customButtons,
 }: ModalProps) => {
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
@@ -29,7 +31,9 @@ const Modal = ({
   const modalElement = (
     <div className="modal-container">
       <div className="modal">
-        <div className={`modal__heading modal__heading--${iconName}`}>
+        <div
+          className={`modal__heading modal__heading--${iconName} modal__heading--${iconSize}`}
+        >
           <h3 className="modal__title">{title}</h3>
           <p className="modal__description">{description}</p>
           {subdescription ? (
@@ -44,9 +48,12 @@ const Modal = ({
         {children}
 
         <div className="modal__back-button">
-          <Button size="medium" width={225} onClick={onConfirm}>
-            Go Back to Room
-          </Button>
+          {customButtons || (
+              <Button size="medium" width={225} onClick={onConfirm}>
+                Go Back to Room
+              </Button>
+            ) ||
+            null}
         </div>
       </div>
     </div>

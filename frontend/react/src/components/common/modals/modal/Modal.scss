@@ -14,9 +14,16 @@
 
   &__heading {
     margin-bottom: 32px;
-    padding-left: 86px;
     text-align: left;
-    background: left center / 74px 74px no-repeat;
+
+    &--large {
+      padding-left: 86px;
+      background: left center / 74px 74px no-repeat;
+    }
+    &--small {
+      padding-left: 50px;
+      background: left top / 38px 38px no-repeat;
+    }
 
     &--presents {
       background-image: url("../../../../assets/images/backgrounds/modal-background-sprite.svg#presents");
@@ -32,6 +39,10 @@
 
     &--car {
       background-image: url("../../../../assets/images/backgrounds/modal-background-sprite.svg#car");
+    }
+
+    &--delete {
+      background-image: url("../../../../assets/images/backgrounds/modal-background-sprite.svg#delete");
     }
   }
 

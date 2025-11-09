@@ -1,4 +1,4 @@
-import { Component, computed, HostBinding, input } from '@angular/core';
+import {Component, computed, HostBinding, input, output} from '@angular/core';
 import { User } from '../../../app.models';
 import { ParticipantCard } from '../participant-card/participant-card';
 import { toTimestamp } from '../../../utils/times';
@@ -15,9 +15,15 @@ export class ParticipantList {
   public readonly isAdmin = input<boolean>(false);
   public readonly userCode = input<string>('');
 
+  readonly handleDeleteUser = output<User>();
+
   @HostBinding('class.non-admin-list')
   get adminClass(): boolean {
     return !this.isAdmin();
+  }
+
+  public deleteUser = (user: User) => {
+    this.handleDeleteUser.emit(user)
   }
 
   currentCount = computed(() => this.participants().length);

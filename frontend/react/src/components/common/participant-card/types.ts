@@ -1,4 +1,7 @@
+import type { GetRoomResponse } from "@types/api.ts";
+
 export interface ParticipantCardProps {
+  roomDetails: GetRoomResponse;
   firstName: string;
   lastName: string;
   isCurrentUser?: boolean;
@@ -7,4 +10,5 @@ export interface ParticipantCardProps {
   adminInfo?: string;
   participantLink?: string;
   onInfoButtonClick?: () => void;
+  onDeleteButtonClick: () => void;
 }
