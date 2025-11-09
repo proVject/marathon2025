@@ -94,7 +94,7 @@ const RoomPage = () => {
     false,
   );
 
-  const onDeleteUser = (id = null) => {
+  const onDeleteUser = (id?: number) => {
     if (!id) {
       showToast("Something went wrong. Try again.", "error", "large");
       return;

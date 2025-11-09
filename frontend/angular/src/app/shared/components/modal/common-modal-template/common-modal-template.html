@@ -10,13 +10,20 @@
       tabindex="0"
     >
       <header class="modal__header">
-        <svg class="modal__picture" aria-hidden="true">
-          <use [attr.href]="headerPictureHref()" />
+        <svg class="modal__picture" [class]="headerPictureClasses()" aria-hidden="true">
+          <use [attr.href]="headerPictureHref()"/>
         </svg>
 
         <div class="modal__header-text">
           <h3 class="modal__title">{{ headerTitle() }}</h3>
-          <p class="modal__subtitle">{{ subtitle() }}</p>
+          <div class="modal__subtitle">
+            <ng-content select="[slot=subtitle]"></ng-content>
+
+            @if (subtitle()) {
+              <p>{{ subtitle() }}</p>
+            }
+          </div>
+          <!--          <p class="modal__subtitle">{{ subtitle() }}</p>-->
 
           @if (isBudgetShown()) {
             <p class="modal__budget title-sm">
@@ -34,9 +41,12 @@
       </header>
 
       <div class="modal__content">
-        <div class="modal__content-container">
-          <ng-content />
-        </div>
+
+        @if (isShownContent()) {
+          <div class="modal__content-container">
+            <ng-content/>
+          </div>
+        }
 
         <div class="modal__actions">
           @if (cancelButtonText(); as text) {
@@ -48,7 +58,8 @@
           }
 
           <app-button
-            class="primary medium"
+            class="medium"
+            [class]="actionButtonVariant()"
             [text]="buttonText()"
             (click)="onActionButtonClick()"
           />

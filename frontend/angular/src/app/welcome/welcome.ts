@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { BudgetPipe } from '../shared/pipes/budget.pipe';
 import { JoinRoomService } from '../join-room/services/join-room';
+import {parseDateString} from '../utils/times';
 
 @Component({
   selector: 'app-welcome',
@@ -36,7 +37,10 @@ export class Welcome {
   public readonly dateFormat = DateFormat.Short;
 
   readonly roomId = computed(() => this.#roomData().invitationCode);
-  readonly giftExchangeDate = computed(() => this.#roomData().giftExchangeDate);
+  readonly giftExchangeDate = computed(() => {
+    const dateStr = this.#roomData()?.giftExchangeDate;
+    return parseDateString(dateStr);
+  });
   readonly giftMaximumBudget = computed(
     () => this.#roomData().giftMaximumBudget
   );

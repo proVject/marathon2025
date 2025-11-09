@@ -32,6 +32,7 @@ import { UrlService } from '../core/services/url';
 import { NavigationLinkSegment } from '../app.enum';
 import { PersonalInfoModal } from './components/personal-info-modal/personal-info-modal';
 import { InvitationModal } from '../shared/components/invitation-modal/invitation-modal';
+import {User} from '../app.models';
 
 @Component({
   selector: 'app-room',
@@ -187,6 +188,23 @@ export class Room implements OnInit {
     const [firstName, lastName] = [gifteeUser?.firstName, gifteeUser?.lastName];
 
     return firstName && lastName ? `${firstName} ${lastName}` : '';
+  }
+
+  public deleteUser = (user: User) => {
+    if (!user?.id) return;
+
+    // this.isDeletingUser.set(true);
+
+    this.#userService.deleteUserById(user.id).pipe(
+      tap({
+        next: ({ status }) => {
+          if (status === 200) {
+            this.#userService.getUsers().subscribe();
+            this.#roomService.getRoomByUserCode(this.userCode());
+          }
+        },
+      })
+    ).subscribe();
   }
 
   #toggleBackgroundAnimation(): void {

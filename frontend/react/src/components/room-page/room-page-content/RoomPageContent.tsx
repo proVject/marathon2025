@@ -105,6 +105,7 @@ const RoomPageContent = ({
       <div className="room-page-content-row">
         <ParticipantsList
           participants={participants}
+          roomDetails={roomDetails}
           onDeleteUser={onDeleteUser}
         />
 

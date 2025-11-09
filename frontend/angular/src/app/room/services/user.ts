@@ -42,6 +42,27 @@ export class UserService {
       })
     );
   }
+  public deleteUserById(userId: number): Observable<HttpResponse<null>> {
+    return this.#apiService.deleteUser(userId, this.#userCode()).pipe(
+      tap({
+        next: () => {
+          // Оновлюємо список користувачів після видалення
+          this.getUsers().subscribe();
+          this.#toasterService.show(
+            ToastMessage.SuccessDeleteUser,
+            MessageType.Success
+          );
+        },
+        error: (err) => {
+          this.#toasterService.show(
+            ToastMessage.SomethingWentWrong,
+            MessageType.Error
+          );
+          console.error('Delete user error:', err);
+        }
+      })
+    );
+  }
 
   public drawNames(): Observable<HttpResponse<string>> {
     return this.#apiService.drawNames(this.#userCode()).pipe(

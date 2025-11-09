@@ -19,6 +19,12 @@ export const enum IconName {
   Close = 'close',
   Link = 'link',
   Info = 'info',
+  Delete = 'delete',
+}
+export const enum IconColor {
+  Green = 'green',
+  Red = 'red',
+  White = 'white',
 }
 
 export const enum AriaLabel {
@@ -120,6 +126,7 @@ export enum ToastMessage {
   PleaseCreateYourRoom = 'Please create your room first.',
   PleaseJoinTheRoom = 'Please join the room first',
   SuccessDrawNames = 'Success! All participants are matched.\nLet the gifting magic start!',
+  SuccessDeleteUser = 'Success! The participant was removed successfully!',
 }
 
 export const enum InputType {
@@ -161,9 +168,16 @@ export const enum ButtonText {
   ReadDetails = 'Read Details',
   DrawNames = 'Draw Names',
   GoBackToRoom = 'Go Back To Room',
+  RemoveParticipant = 'Remove participant',
   ViewWishlist = 'View Wishlist',
   Cancel = 'Cancel',
   ViewInformation = 'View Information',
+}
+
+export const enum ButtonVariant {
+  Primary = 'primary',
+  Secondary = 'secondary',
+  Warning = 'warning',
 }
 
 export const enum ButtonType {
@@ -184,6 +198,18 @@ export const enum PictureName {
   StNick = 'st-nick',
   Cookie = 'cookie',
   Invitation = 'invitation',
+  Delete = 'delete',
+}
+
+export const enum PictureSize {
+  Small = 'small',
+  Large = 'large',
+}
+export const enum PictureColor {
+  None = '',
+  Primary = 'primary',
+  Secondary = 'secondary',
+  Warning = 'warning',
 }
 
 export const enum FormTitle {
@@ -290,6 +316,7 @@ export const enum ModalTitle {
   LookWhoYouGot = 'Look Who You Got!',
   WishList = 'Your Wishlist',
   ParticipantDetails = 'Participant Details',
+  RemoveParticipant = 'Remove participant',
   PersonalInformation = 'Personal Information',
   Invitation = 'Invite New Members',
 }

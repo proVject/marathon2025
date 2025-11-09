@@ -18,6 +18,7 @@ import { MyWishlistModal } from './room/components/my-wishlist/components/my-wis
 import { PersonalInfoModal } from './room/components/personal-info-modal/personal-info-modal';
 import { InvitationModal } from './shared/components/invitation-modal/invitation-modal';
 import { ParticipantInfoModal } from './room/components/participant-info-modal/participant-info-modal';
+import {ParticipantDeleteModal} from './room/components/participant-delete-modal/participant-delete-modal';
 
 export interface StepperItem {
   isActive: boolean;
@@ -171,7 +172,8 @@ export type ModalInputs =
   | GifteeInfoModalInputs
   | MyWishlistModalInputs
   | PersonalInfoModalInputs
-  | InvitationModalInputs;
+  | InvitationModalInputs
+  | PersonalDeleteModalInputs;
 
 export type ModalOutputs = Record<string, (...args: unknown[]) => void>;
 
@@ -181,6 +183,7 @@ export type ModalComponentType = Type<
   | PersonalInfoModal
   | InvitationModal
   | ParticipantInfoModal
+  | ParticipantDeleteModal
 >;
 
 export interface GifteePersonalInfoItem {
@@ -205,6 +208,14 @@ export interface MyWishlistModalInputs {
 
 export interface PersonalInfoModalInputs {
   personalInfo: GifteePersonalInfoItem[];
+}
+
+export interface PersonalDeleteModalItem {
+  firstName: string;
+  lastName: string;
+}
+export interface PersonalDeleteModalInputs {
+  personalInfo: PersonalDeleteModalItem;
 }
 export interface InvitationModalInputs {
   roomLink: string;

@@ -16,7 +16,7 @@ import { BudgetPipe } from '../../../pipes/budget.pipe';
   animations: [fadeIn(FADE_IN_ANIMATION_DURATION_MS)],
 })
 export class CommonModalTemplate extends ParentModalLayout {
-  readonly subtitle = input.required<string>();
+  readonly subtitle = input<string>();
   readonly cancelButtonText = input<ButtonText>();
   readonly budget = input<number>();
 

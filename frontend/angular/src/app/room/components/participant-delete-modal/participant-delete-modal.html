@@ -1,0 +1,19 @@
+<app-common-modal-template
+  [headerPictureName]="pictureName"
+  [headerPictureSize]="pictureSize"
+  [headerPictureColor]="pictureColor"
+  [headerTitle]="title"
+  [buttonText]="buttonText"
+  [subtitle]="subtitle"
+  [cancelButtonText]="cancelButtonText"
+  (buttonAction)="onActionButtonClick()"
+  (closeModal)="onCloseModal()"
+  (cancelButtonAction)="onCloseModal()"
+  [actionButtonVariant]="actionButtonVariant"
+  [isShownContent]="isShownContent"
+>
+  <div slot="subtitle">
+    Are you sure you want to delete <b>{{ fullName() }}</b> from the from the room?
+  </div>
+  <div>1231</div>
+</app-common-modal-template>

@@ -31,7 +31,7 @@ const ParticipantDeleteModal = ({
     <Modal
       title="Remove participant"
       description={description}
-      iconName="cookie"
+      iconName="delete"
       iconSize="small"
       isOpen={isOpen}
       onClose={onClose}

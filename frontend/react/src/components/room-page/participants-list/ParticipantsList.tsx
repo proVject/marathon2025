@@ -17,6 +17,7 @@ import ParticipantDeleteModal from "@components/common/modals/participant-delete
 
 const ParticipantsList = ({
   participants,
+  roomDetails,
   onDeleteUser,
 }: ParticipantsListProps) => {
   const { userCode } = useParams();
@@ -88,6 +89,7 @@ const ParticipantsList = ({
               key={admin?.id}
               firstName={admin?.firstName}
               lastName={admin?.lastName}
+              roomDetails={roomDetails}
               isCurrentUser={userCode === admin?.userCode}
               isAdmin={admin?.isAdmin}
               isCurrentUserAdmin={userCode === admin?.userCode}
@@ -102,6 +104,7 @@ const ParticipantsList = ({
               key={user?.id}
               firstName={user?.firstName}
               lastName={user?.lastName}
+              roomDetails={roomDetails}
               isCurrentUser={userCode === user?.userCode}
               isCurrentUserAdmin={userCode === admin?.userCode}
               participantLink={generateParticipantLink(user?.userCode)}
